@@ -157,40 +157,31 @@ section { position: relative; }
 @media (max-width: 860px) { .sec-head { grid-template-columns: 1fr; gap: 18px; } }
 
 /* ---------- works with ---------- */
-.works { background: var(--white); border-top: 1px solid var(--rule); padding: clamp(64px, 8vw, 110px) 0 clamp(56px, 7vw, 90px); }
-.works-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 44px; }
-.works-head h2 { margin: 0; font-size: clamp(30px, 3.8vw, 50px); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; }
-.works-head p { margin: 0; color: var(--ink-soft); font-size: 17px; max-width: 32em; }
-.wgroup { display: grid; grid-template-columns: 170px 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--rule); }
-.wgroup h3 { margin: 12px 0 0; font-size: 15px; font-weight: 600; color: var(--ink-faint); }
-.wgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
-.wt {
-  display: grid; grid-template-columns: 30px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center;
-  padding: 12px 14px; min-height: 64px; border-radius: 12px; border: 1px solid var(--rule); background: var(--paper);
-  transition: border-color .2s, background .2s, transform .2s;
+.works { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 30px 0 22px; overflow: hidden; }
+.works-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; margin-bottom: 18px; }
+.works-bar h2 { margin: 0; font-size: clamp(18px, 1.7vw, 22px); letter-spacing: -.02em; font-weight: 700; }
+.works-bar p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+.mq {
+  overflow: hidden; padding: 7px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
-.wt:hover { border-color: var(--c, var(--ink)); background: #fff; transform: translateY(-1px); }
-.lg {
-  grid-row: 1 / span 2; width: 26px; height: 26px; display: block;
-  background: var(--c, var(--ink)); -webkit-mask: var(--u) center / contain no-repeat; mask: var(--u) center / contain no-repeat;
+.mq-track { display: flex; width: max-content; animation: mq 70s linear infinite; }
+.mq-track.rev { animation-direction: reverse; animation-duration: 80s; }
+.mq ul { display: flex; align-items: center; gap: clamp(28px, 3.4vw, 48px); list-style: none; margin: 0; padding: 0 clamp(14px, 1.7vw, 24px); }
+.mq li { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-weight: 700; font-size: clamp(15px, 1.35vw, 18px); letter-spacing: -.015em; color: var(--ink); }
+@keyframes mq { to { transform: translateX(-50%); } }
+.mi { width: 22px; height: 22px; flex: none; background: var(--c); -webkit-mask: var(--u) center / contain no-repeat; mask: var(--u) center / contain no-repeat; }
+.mi.own { background: none; -webkit-mask: none; mask: none; }
+.mi.own svg { width: 26px; height: 26px; margin: -2px; display: block; }
+.mi.mono-mark { -webkit-mask: none; mask: none; background: var(--ink); color: var(--paper); border-radius: 6px; display: grid; place-items: center; font: 600 9.5px/1 var(--mono); letter-spacing: -.03em; }
+.tm { margin-top: 12px; font-size: 12px; color: var(--ink-faint); }
+@media (prefers-reduced-motion: reduce) {
+  .mq { -webkit-mask-image: none; mask-image: none; }
+  .mq-track { animation: none; width: auto; }
+  .mq ul { flex-wrap: wrap; row-gap: 12px; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .mq ul[aria-hidden] { display: none; }
 }
-.lg.own { background: none; -webkit-mask: none; mask: none; color: var(--cobalt); }
-.lg.own svg { width: 30px; height: 30px; margin: -2px; }
-.lg.mono-tile {
-  -webkit-mask: none; mask: none; background: var(--ink); color: var(--paper); border-radius: 7px;
-  display: grid; place-items: center; font: 600 10.5px/1 var(--mono); letter-spacing: -.02em;
-}
-.wn, .ws { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.wn { font-weight: 700; font-size: 15.5px; letter-spacing: -.015em; line-height: 1.2; align-self: end; }
-.ws { font-size: 13px; color: var(--ink-faint); line-height: 1.3; align-self: start; }
-.tm { margin: 18px 0 0; font-size: 12.5px; color: var(--ink-faint); }
-@media (max-width: 860px) {
-  .works-head { grid-template-columns: 1fr; gap: 14px; }
-  .wgroup { grid-template-columns: 1fr; gap: 10px; }
-  .wgroup h3 { margin: 0; }
-}
-@media (max-width: 420px) { .wgrid { grid-template-columns: 1fr 1fr; } .wt { padding: 10px; column-gap: 10px; grid-template-columns: 24px 1fr; } .lg { width: 22px; height: 22px; } .wn { font-size: 14px; } .ws { font-size: 12px; } }
-
 
 /* ---------- choose ---------- */
 .choose { position: relative; background: var(--ink); color: var(--paper); }
@@ -502,25 +493,13 @@ footer a:hover { color: var(--paper); }
 
 <!-- ======================= WORKS WITH ======================= -->
 <section class="works" id="works" aria-labelledby="works-title">
-  <div class="wrap">
-    <div class="works-head">
-      <h2 id="works-title">Works with the agents and models you already run.</h2>
-      <p>Anything that speaks the Anthropic or OpenAI API, or can send its traffic through a proxy, plugs in without code changes. Switch providers in policy, not in every agent.</p>
-    </div>
-    <div class="wgroup">
-      <h3>Agents</h3>
-      <ul class="wgrid"><li class="wt" style="--c:#2346d8"><span class="lg own"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M10 11 Q23 16 29 29" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 29 Q23 24 29 11" fill="none" stroke="#ff4f2e" stroke-width="2"/></svg></span><span class="wn">Nova</span><span class="ws">our own agent</span></li><li class="wt" style="--c:#D97757;--t:#D97757"><span class="lg" style="--u:url(logos/claudecode.svg)"></span><span class="wn">Claude Code</span><span class="ws">coding agent</span></li><li class="wt"><span class="lg mono-tile">Cx</span><span class="wn">Codex</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/opencode.svg)"></span><span class="wn">Opencode</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/cursor.svg)"></span><span class="wn">Cursor</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/githubcopilot.svg)"></span><span class="wn">GitHub Copilot</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#8E75B2;--t:#8E75B2"><span class="lg" style="--u:url(logos/googlegemini.svg)"></span><span class="wn">Gemini CLI</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#0B100F;--t:#0B100F"><span class="lg" style="--u:url(logos/windsurf.svg)"></span><span class="wn">Windsurf</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#0c1726;--t:#7FC8FF"><span class="lg" style="--u:url(logos/langchain.svg)"></span><span class="wn">LangChain</span><span class="ws">agent framework</span></li><li class="wt" style="--c:#FF5A50;--t:#FF5A50"><span class="lg" style="--u:url(logos/crewai.svg)"></span><span class="wn">CrewAI</span><span class="ws">agent framework</span></li><li class="wt" style="--c:#EA4B71;--t:#EA4B71"><span class="lg" style="--u:url(logos/n8n.svg)"></span><span class="wn">n8n</span><span class="ws">workflow agents</span></li><li class="wt"><span class="lg mono-tile">{ }</span><span class="wn">Your agent</span><span class="ws">any SDK</span></li></ul>
-    </div>
-    <div class="wgroup">
-      <h3>Model providers</h3>
-      <ul class="wgrid"><li class="wt" style="--c:#191919;--t:#191919"><span class="lg" style="--u:url(logos/anthropic.svg)"></span><span class="wn">Anthropic</span><span class="ws">Claude models</span></li><li class="wt"><span class="lg mono-tile">AI</span><span class="wn">OpenAI</span><span class="ws">GPT models</span></li><li class="wt"><span class="lg mono-tile">AWS</span><span class="wn">AWS Bedrock</span><span class="ws">Claude, Llama</span></li><li class="wt" style="--c:#4285F4;--t:#4285F4"><span class="lg" style="--u:url(logos/googlecloud.svg)"></span><span class="wn">Vertex AI</span><span class="ws">Gemini, Claude</span></li><li class="wt"><span class="lg mono-tile">Az</span><span class="wn">Azure OpenAI</span><span class="ws">your tenant</span></li><li class="wt" style="--c:#FA520F;--t:#FA520F"><span class="lg" style="--u:url(logos/mistralai.svg)"></span><span class="wn">Mistral AI</span><span class="ws">API or self-hosted</span></li><li class="wt" style="--c:#0467DF;--t:#0467DF"><span class="lg" style="--u:url(logos/meta.svg)"></span><span class="wn">Meta Llama</span><span class="ws">open weights</span></li><li class="wt" style="--c:#5786FE;--t:#5786FE"><span class="lg" style="--u:url(logos/deepseek.svg)"></span><span class="wn">DeepSeek</span><span class="ws">open weights</span></li><li class="wt" style="--c:#6950EF;--t:#6950EF"><span class="lg" style="--u:url(logos/qwen.svg)"></span><span class="wn">Qwen</span><span class="ws">open weights</span></li><li class="wt" style="--c:#0c1726;--t:#FFD21E"><span class="lg" style="--u:url(logos/huggingface.svg)"></span><span class="wn">Hugging Face</span><span class="ws">TGI endpoints</span></li><li class="wt" style="--c:#30A2FF;--t:#30A2FF"><span class="lg" style="--u:url(logos/vllm.svg)"></span><span class="wn">vLLM</span><span class="ws">your GPUs</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/ollama.svg)"></span><span class="wn">Ollama</span><span class="ws">air-gapped</span></li><li class="wt" style="--c:#76B900;--t:#76B900"><span class="lg" style="--u:url(logos/nvidia.svg)"></span><span class="wn">NVIDIA NIM</span><span class="ws">your GPUs</span></li></ul>
-    </div>
-    <div class="wgroup">
-      <h3>Systems behind the checkpoint</h3>
-      <ul class="wgrid"><li class="wt" style="--c:#181717;--t:#181717"><span class="lg" style="--u:url(logos/github.svg)"></span><span class="wn">GitHub</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#FC6D26;--t:#FC6D26"><span class="lg" style="--u:url(logos/gitlab.svg)"></span><span class="wn">GitLab</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#0052CC;--t:#0052CC"><span class="lg" style="--u:url(logos/jira.svg)"></span><span class="wn">Jira</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#007DC1;--t:#007DC1"><span class="lg" style="--u:url(logos/okta.svg)"></span><span class="wn">Okta</span><span class="ws">identity and groups</span></li><li class="wt" style="--c:#632CA6;--t:#632CA6"><span class="lg" style="--u:url(logos/datadog.svg)"></span><span class="wn">Datadog</span><span class="ws">audit export</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/splunk.svg)"></span><span class="wn">Splunk</span><span class="ws">audit export</span></li></ul>
-    </div>
-    <p class="tm">Product names and logos are trademarks of their owners, shown to indicate compatibility. No endorsement implied.</p>
+  <div class="wrap works-bar">
+    <h2 id="works-title">Works with the agents and models you already run</h2>
+    <p>Point them at one endpoint. No code changes, no new SDK.</p>
   </div>
+  <div class="mq" role="group" aria-label="Agents"><div class="mq-track"><ul><li><span class="mi own"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="none" stroke="#2346d8" stroke-width="2.6"/><path d="M10 11 Q23 16 29 29" fill="none" stroke="#2346d8" stroke-width="2.2"/><path d="M10 29 Q23 24 29 11" fill="none" stroke="#ff4f2e" stroke-width="2.2"/></svg></span>Nova</li><li><span class="mi" style="--u:url(logos/claudecode.svg);--c:#D97757"></span>Claude Code</li><li><span class="mi mono-mark">Cx</span>Codex</li><li><span class="mi" style="--u:url(logos/opencode.svg);--c:#000000"></span>Opencode</li><li><span class="mi" style="--u:url(logos/cursor.svg);--c:#000000"></span>Cursor</li><li><span class="mi" style="--u:url(logos/githubcopilot.svg);--c:#000000"></span>GitHub Copilot</li><li><span class="mi" style="--u:url(logos/googlegemini.svg);--c:#8E75B2"></span>Gemini CLI</li><li><span class="mi" style="--u:url(logos/windsurf.svg);--c:#0B100F"></span>Windsurf</li><li><span class="mi" style="--u:url(logos/langchain.svg);--c:#0c1726"></span>LangChain</li><li><span class="mi" style="--u:url(logos/crewai.svg);--c:#FF5A50"></span>CrewAI</li><li><span class="mi" style="--u:url(logos/n8n.svg);--c:#EA4B71"></span>n8n</li><li><span class="mi mono-mark">{ }</span>your own agent</li></ul><ul aria-hidden="true"><li><span class="mi own"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="none" stroke="#2346d8" stroke-width="2.6"/><path d="M10 11 Q23 16 29 29" fill="none" stroke="#2346d8" stroke-width="2.2"/><path d="M10 29 Q23 24 29 11" fill="none" stroke="#ff4f2e" stroke-width="2.2"/></svg></span>Nova</li><li><span class="mi" style="--u:url(logos/claudecode.svg);--c:#D97757"></span>Claude Code</li><li><span class="mi mono-mark">Cx</span>Codex</li><li><span class="mi" style="--u:url(logos/opencode.svg);--c:#000000"></span>Opencode</li><li><span class="mi" style="--u:url(logos/cursor.svg);--c:#000000"></span>Cursor</li><li><span class="mi" style="--u:url(logos/githubcopilot.svg);--c:#000000"></span>GitHub Copilot</li><li><span class="mi" style="--u:url(logos/googlegemini.svg);--c:#8E75B2"></span>Gemini CLI</li><li><span class="mi" style="--u:url(logos/windsurf.svg);--c:#0B100F"></span>Windsurf</li><li><span class="mi" style="--u:url(logos/langchain.svg);--c:#0c1726"></span>LangChain</li><li><span class="mi" style="--u:url(logos/crewai.svg);--c:#FF5A50"></span>CrewAI</li><li><span class="mi" style="--u:url(logos/n8n.svg);--c:#EA4B71"></span>n8n</li><li><span class="mi mono-mark">{ }</span>your own agent</li></ul></div></div>
+  <div class="mq" role="group" aria-label="Model providers"><div class="mq-track rev"><ul><li><span class="mi" style="--u:url(logos/anthropic.svg);--c:#191919"></span>Anthropic</li><li><span class="mi mono-mark">AI</span>OpenAI</li><li><span class="mi mono-mark">AWS</span>AWS Bedrock</li><li><span class="mi" style="--u:url(logos/googlecloud.svg);--c:#4285F4"></span>Vertex AI</li><li><span class="mi mono-mark">Az</span>Azure OpenAI</li><li><span class="mi" style="--u:url(logos/mistralai.svg);--c:#FA520F"></span>Mistral AI</li><li><span class="mi" style="--u:url(logos/meta.svg);--c:#0467DF"></span>Meta Llama</li><li><span class="mi" style="--u:url(logos/deepseek.svg);--c:#5786FE"></span>DeepSeek</li><li><span class="mi" style="--u:url(logos/qwen.svg);--c:#6950EF"></span>Qwen</li><li><span class="mi" style="--u:url(logos/huggingface.svg);--c:#0c1726"></span>Hugging Face</li><li><span class="mi" style="--u:url(logos/vllm.svg);--c:#30A2FF"></span>vLLM</li><li><span class="mi" style="--u:url(logos/ollama.svg);--c:#000000"></span>Ollama</li><li><span class="mi" style="--u:url(logos/nvidia.svg);--c:#76B900"></span>NVIDIA NIM</li></ul><ul aria-hidden="true"><li><span class="mi" style="--u:url(logos/anthropic.svg);--c:#191919"></span>Anthropic</li><li><span class="mi mono-mark">AI</span>OpenAI</li><li><span class="mi mono-mark">AWS</span>AWS Bedrock</li><li><span class="mi" style="--u:url(logos/googlecloud.svg);--c:#4285F4"></span>Vertex AI</li><li><span class="mi mono-mark">Az</span>Azure OpenAI</li><li><span class="mi" style="--u:url(logos/mistralai.svg);--c:#FA520F"></span>Mistral AI</li><li><span class="mi" style="--u:url(logos/meta.svg);--c:#0467DF"></span>Meta Llama</li><li><span class="mi" style="--u:url(logos/deepseek.svg);--c:#5786FE"></span>DeepSeek</li><li><span class="mi" style="--u:url(logos/qwen.svg);--c:#6950EF"></span>Qwen</li><li><span class="mi" style="--u:url(logos/huggingface.svg);--c:#0c1726"></span>Hugging Face</li><li><span class="mi" style="--u:url(logos/vllm.svg);--c:#30A2FF"></span>vLLM</li><li><span class="mi" style="--u:url(logos/ollama.svg);--c:#000000"></span>Ollama</li><li><span class="mi" style="--u:url(logos/nvidia.svg);--c:#76B900"></span>NVIDIA NIM</li></ul></div></div>
+  <p class="wrap tm">Product names and logos are trademarks of their owners, shown to indicate compatibility. No endorsement implied.</p>
 </section>
 
 <!-- ======================= CHOOSE ======================= -->
