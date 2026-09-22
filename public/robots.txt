@@ -1,0 +1,12 @@
+# platform.mouline.co.uk
+#
+# Served from docs/platform/robots.txt in the private nova-marketing repo.
+# Edit it there, not in the public platform-mouline-co-uk site repo, which is
+# rebuilt from scratch on every deploy.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://platform.mouline.co.uk/sitemap.xml
+
+Content-Signal: search=yes, ai-input=yes, ai-train=no
