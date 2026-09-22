@@ -1,0 +1,41 @@
+name: Deploy platform site to production
+
+# Content is pushed into public/ by nova-marketing's publish-platform workflow.
+# This repo no longer reaches into nova-marketing, so that repo never needs to
+# be made public. Manual dispatch redeploys whatever is currently in public/.
+on:
+  push:
+    branches: [main]
+    paths:
+      - public/**
+  workflow_dispatch:
+
+# Grant the built-in GITHUB_TOKEN exactly what Pages deployment needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one production deploy at a time; newer runs supersede in-flight ones.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the site content
+        uses: actions/checkout@v7
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
