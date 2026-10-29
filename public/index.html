@@ -446,7 +446,11 @@ section { position: relative; }
 .final .btn-line { color: var(--paper); border-color: #46546a; }
 .final .btn-line:hover { background: var(--paper); color: var(--ink); }
 footer { background: var(--ink); color: #7d8aa3; font-size: 14px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 28px; padding-bottom: 36px; border-top: 1px solid #22314a; }
+footer .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 20px; padding-top: 40px; padding-bottom: 36px; border-top: 1px solid #22314a; }
+footer h4 { margin: 0 0 12px; font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--paper); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+footer .fine { grid-column: 1 / -1; margin: 12px 0 0; padding-top: 20px; border-top: 1px solid #22314a; }
+@media (max-width: 720px) { footer .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 footer a { color: #a9b5c6; text-decoration: none; }
 footer a:hover { color: var(--paper); }
 
@@ -836,8 +840,39 @@ footer a:hover { color: var(--paper); }
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Mouline. Mouline Platform and Nova are products of Mouline.</span>
-    <span><a href="https://mouline.co.uk/">mouline.co.uk</a></span>
+    <div>
+      <h4>Nova</h4>
+      <ul>
+        <li><a href="https://mouline.co.uk/#how">How it works</a></li>
+        <li><a href="https://mouline.co.uk/#engage">Pricing</a></li>
+        <li><a href="https://mouline.co.uk/demo-invoice-exceptions.html">Live demo</a></li>
+        <li><a href="./">Mouline Platform</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get started</h4>
+      <ul>
+        <li><a href="https://mouline.co.uk/get-started.html">Setup guide</a></li>
+        <li><a href="https://control.mouline.co.uk/install">Add Nova to Slack</a></li>
+        <li><a href="https://control.mouline.co.uk/login">Sign in</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Talk to us</h4>
+      <ul>
+        <li><a href="mailto:founders@mouline.work">founders@mouline.work</a></li>
+        <li><a href="https://calendar.app.google/oUFUi6YCjYuzDyt58" target="_blank" rel="noopener">Book a call</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="https://mouline.co.uk/terms.html">Terms</a></li>
+        <li><a href="https://mouline.co.uk/refund.html">Refunds</a></li>
+        <li><a href="https://mouline.co.uk/privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+    <p class="fine">© 2026 Mouline. Mouline Platform and Nova are products of Mouline.</p>
   </div>
 </footer>
 
